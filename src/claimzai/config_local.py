@@ -1,0 +1,26 @@
+data_clean = {
+    'data_file_name': 'insurance_claims',
+    'top_chart_fields': [
+        'incident_month',
+        'insured_sex',
+        'insured_education_level',
+        'insured_occupation',
+        'insured_hobbies',
+        'insured_relationship',
+        'incident_type',
+        'collision_type',
+        'age',
+        'incident_severity',
+        'incident_state',
+        'incident_city',
+        'incident_hour_of_the_day',
+        'number_of_vehicles_involved',
+        'property_damage',
+        'bodily_injuries',
+        'witnesses',
+        'police_report_available',
+        'auto_model',
+        'auto_year',
+        'fraud_reported'
+    ],
+}
