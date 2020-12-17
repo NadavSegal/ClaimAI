@@ -18,6 +18,7 @@ Note: This skeleton file can be safely removed if not needed!
 import argparse
 import sys
 import logging
+import utilities
 
 from claimzai import __version__
 
@@ -26,22 +27,6 @@ __copyright__ = "nadavsegal"
 __license__ = "mit"
 
 _logger = logging.getLogger(__name__)
-
-
-def fib(n):
-    """Fibonacci example function
-
-    Args:
-      n (int): integer
-
-    Returns:
-      int: n-th Fibonacci number
-    """
-    assert n > 0
-    a, b = 1, 1
-    for i in range(n-1):
-        a, b = b, a+b
-    return a
 
 
 def parse_args(args):
@@ -60,6 +45,7 @@ def parse_args(args):
         action="version",
         version="ClaimzAI {ver}".format(ver=__version__))
     parser.add_argument(
+        "--n",
         dest="n",
         help="n-th Fibonacci number",
         type=int,
@@ -88,8 +74,11 @@ def setup_logging(loglevel):
       loglevel (int): minimum loglevel for emitting messages
     """
     logformat = "[%(asctime)s] %(levelname)s:%(name)s:%(message)s"
-    logging.basicConfig(level=loglevel, stream=sys.stdout,
+    # logging.basicConfig(level=loglevel, stream=sys.stdout,
+    #                     format=logformat, datefmt="%Y-%m-%d %H:%M:%S")
+    logging.basicConfig(filename='./src/claimzai.log', level=loglevel,
                         format=logformat, datefmt="%Y-%m-%d %H:%M:%S")
+    logging.getLogger().addHandler(logging.StreamHandler())
 
 
 def main(args):
@@ -98,8 +87,24 @@ def main(args):
     Args:
       args ([str]): command line parameter list
     """
+    logging.getLogger('matplotlib.font_manager').disabled = True
+    args.extend(['--n', '40', '--verbose', '--very-verbose'])
     args = parse_args(args)
     setup_logging(args.loglevel)
+
+    data = utilities.PrepareData()
+    data.clean()
+    data.add()
+
+    descriptive = utilities.Descriptive(data)
+    descriptive.top_chart()
+
+
+    utilities.predictive()
+    utilities.prescriptive()
+
+
+    process_frame.init_bbox()
     _logger.debug("Starting crazy calculations...")
     print("The {}-th Fibonacci number is {}".format(args.n, fib(args.n)))
     _logger.info("Script ends here")
